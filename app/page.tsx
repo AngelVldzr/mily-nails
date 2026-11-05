@@ -1,5 +1,6 @@
 import Image from "next/image";
 import ScrollBackground from "@/components/ScrollBackground";
+import Chispitas from "@/components/Chispitas";
 import Galeria from "@/components/Galeria";
 import TikTokVideos from "@/components/TikTokVideos";
 import ClubMily from "@/components/ClubMily";
@@ -27,6 +28,7 @@ export default function Home() {
   return (
     <>
       <ScrollBackground />
+      <Chispitas />
 
       <nav className="nav">
         <a href="#inicio" className="nav-logo">

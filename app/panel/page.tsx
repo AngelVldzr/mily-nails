@@ -17,6 +17,34 @@ type Clienta = {
 
 const fmtTel = (t: string) => t.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
 
+type Sello = {
+  nombre: string;
+  telefono: string;
+  enCiclo: number;
+  descuento: number;
+  descuentoSiguienteVisita: number;
+  faltan: number;
+  proximoNivel: { descuento: number };
+};
+
+/** Mensaje de WhatsApp para avisarle a la clienta su progreso */
+function mensajeSello(v: Sello) {
+  const nombre = v.nombre.split(" ")[0];
+  const sitio = typeof window !== "undefined" ? window.location.origin : "";
+  let txt = `¡Hola ${nombre}! 💅 Gracias por tu visita a Mily Nail's.\n`;
+  if (v.descuento > 0) txt += `Hoy disfrutaste tu ${v.descuento}% de descuento del Club Mily 🎁\n`;
+  if (v.enCiclo === CICLO) {
+    txt += `¡Completaste tu tarjeta de ${CICLO} sellos! 👑 Desde tu próxima visita empiezas una nueva.\n`;
+  } else {
+    txt += `Ya llevas ${v.enCiclo} de ${CICLO} sellos ✨\n`;
+    txt += v.descuentoSiguienteVisita > 0
+      ? `¡Tu próxima visita tiene ${v.descuentoSiguienteVisita}% de descuento!\n`
+      : `Te ${v.faltan === 1 ? "falta 1 visita" : `faltan ${v.faltan} visitas`} para tu ${v.proximoNivel.descuento}% de descuento.\n`;
+  }
+  txt += `Consulta tu tarjeta cuando quieras: ${sitio}/#club`;
+  return `https://wa.me/52${v.telefono}?text=${encodeURIComponent(txt)}`;
+}
+
 export default function Panel() {
   const [auth, setAuth] = useState<"cargando" | "no" | "si">("cargando");
   const [pass, setPass] = useState("");
@@ -24,6 +52,8 @@ export default function Panel() {
   const [lista, setLista] = useState<Clienta[]>([]);
   const [aviso, setAviso] = useState<{ tipo: "ok" | "error"; txt: string } | null>(null);
   const [nueva, setNueva] = useState({ nombre: "", telefono: "" });
+  const [sellarHoy, setSellarHoy] = useState(true);
+  const [ultimo, setUltimo] = useState<Sello | null>(null);
   const [ocupado, setOcupado] = useState<string | null>(null);
 
   const buscar = useCallback(async (texto = q) => {
@@ -49,12 +79,13 @@ export default function Panel() {
     setAuth("no");
   }
 
-  async function registrar(c: Clienta) {
+  async function registrar(c: Pick<Clienta, "id" | "nombre" | "telefono">) {
     setOcupado(c.id);
     const r = await fetch("/api/admin/visitas", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ clientaId: c.id }) });
     const d = await r.json();
     setOcupado(null);
     if (!r.ok) return setAviso({ tipo: "error", txt: d.error });
+    setUltimo({ ...d, nombre: c.nombre, telefono: c.telefono });
     setAviso({
       tipo: "ok",
       txt: d.descuento > 0
@@ -78,10 +109,16 @@ export default function Panel() {
     const r = await fetch("/api/admin/clientas", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(nueva) });
     const d = await r.json();
     if (!r.ok) return setAviso({ tipo: "error", txt: d.error });
-    setAviso({ tipo: "ok", txt: `💜 ${nueva.nombre} ya es parte del Club Mily. Registra su visita de hoy abajo.` });
-    setQ(nueva.telefono);
-    buscar(nueva.telefono);
+    const tel = nueva.telefono.replace(/\D/g, "").slice(-10);
     setNueva({ nombre: "", telefono: "" });
+    setQ(tel);
+    if (sellarHoy) {
+      await registrar({ id: d.id, nombre: nueva.nombre.trim(), telefono: tel });
+      buscar(tel);
+    } else {
+      setAviso({ tipo: "ok", txt: `💜 ${nueva.nombre} ya es parte del Club Mily.` });
+      buscar(tel);
+    }
   }
 
   if (auth === "cargando") return <main className="panel"><p>Cargando…</p></main>;
@@ -108,6 +145,18 @@ export default function Panel() {
 
       {aviso && <p className={`msg ${aviso.tipo === "ok" ? "msg-ok" : "msg-error"}`} onClick={() => setAviso(null)}>{aviso.txt}</p>}
 
+      {ultimo && (
+        <div className="tarjeta panel-sello">
+          <p>¿Le avisas a <b>{ultimo.nombre}</b> cuántos sellos lleva?</p>
+          <div className="panel-acciones">
+            <a className="btn btn-wa" href={mensajeSello(ultimo)} target="_blank" rel="noopener noreferrer" onClick={() => setUltimo(null)}>
+              Enviar por WhatsApp
+            </a>
+            <button className="btn btn-link" onClick={() => setUltimo(null)}>Ahora no</button>
+          </div>
+        </div>
+      )}
+
       <form className="tarjeta panel-nueva" onSubmit={crear}>
         <h2>Registrar clienta nueva</h2>
         <div className="fila-input">
@@ -115,6 +164,10 @@ export default function Panel() {
           <input placeholder="WhatsApp (10 dígitos)" inputMode="numeric" value={nueva.telefono} onChange={(e) => setNueva({ ...nueva, telefono: e.target.value })} required />
           <button className="btn btn-primario">Agregar</button>
         </div>
+        <label className="check">
+          <input type="checkbox" checked={sellarHoy} onChange={(e) => setSellarHoy(e.target.checked)} />
+          Darle también su primer sello (visita de hoy)
+        </label>
       </form>
 
       <form className="panel-buscar" onSubmit={(e) => { e.preventDefault(); buscar(); }}>

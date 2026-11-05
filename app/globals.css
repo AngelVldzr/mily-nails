@@ -48,8 +48,15 @@ h1, h2, h3 { font-family: var(--f-titulo), Georgia, serif; color: var(--lila-osc
 .esc-2 { background: radial-gradient(circle at 15% 85%, #e6e1fb 0, transparent 45%), linear-gradient(200deg, #f6ecfb 0%, #ece4fb 100%); color: #a99ee0; }
 .esc-3 { background: radial-gradient(circle at 85% 80%, #fbe7b0 0, transparent 42%), linear-gradient(170deg, #fff4e4 0%, var(--rosa) 70%); color: #e3c06c; }
 .esc-4 { background: radial-gradient(circle at 10% 20%, #fde0e8 0, transparent 40%), linear-gradient(190deg, var(--durazno) 0%, var(--rosa) 60%); color: #d9a4c9; }
+.fondo { --mx: 0; --my: 0; }
+.fondo-pieza {
+  position: absolute; display: block;
+  /* se mueve en sentido contrario al dedo/mouse → sensación de profundidad */
+  transform: translate3d(calc(var(--mx) * var(--d) * -1px), calc(var(--my) * var(--d) * -1px), 0);
+  will-change: transform;
+}
 .fondo-ico {
-  position: absolute; opacity: .55;
+  display: block; opacity: .55;
   animation: flotar 9s ease-in-out infinite;
   transform: rotate(var(--r));
 }
@@ -302,3 +309,53 @@ html { overflow-x: clip; }
 
 .horario-disp { margin: 0; color: var(--texto-suave); }
 .horario-disp b { color: var(--lila-osc); font-size: 1.05rem; }
+
+/* ── Chispitas al tocar ───────────────────────── */
+.chispitas { position: fixed; inset: 0; pointer-events: none; z-index: 60; overflow: hidden; }
+.chispitas span {
+  position: absolute; translate: -50% -50%; line-height: 1;
+  animation: chispa .75s cubic-bezier(.2,.7,.3,1) forwards;
+}
+@keyframes chispa {
+  0% { transform: translate(0, 0) scale(.4); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(1) rotate(90deg); opacity: 0; }
+}
+
+.check { display: flex; align-items: center; gap: .55rem; margin-top: .8rem; font-weight: 500; color: var(--texto); cursor: pointer; }
+.check input { width: 20px; height: 20px; accent-color: var(--lila); }
+.panel-sello { padding: 1.1rem 1.3rem; margin: 1rem 0; border: 2px solid var(--wa); }
+.panel-sello p { margin: 0 0 .7rem; }
+.panel-sello .btn-wa { width: auto; }
+
+/* ── Optimización celular ─────────────────────── */
+.lightbox-flecha {
+  position: absolute; top: 50%; translate: 0 -50%; z-index: 2;
+  width: 46px; height: 46px; border-radius: 50%; border: 0; cursor: pointer;
+  background: rgba(255,255,255,.85); color: var(--lila-osc); font-size: 1.8rem; line-height: 1;
+}
+.lightbox-flecha.izq { left: .8rem; }
+.lightbox-flecha.der { right: .8rem; }
+.wa-flotante { bottom: calc(1.1rem + env(safe-area-inset-bottom)); right: calc(1.1rem + env(safe-area-inset-right)); }
+.pie { padding-bottom: calc(6rem + env(safe-area-inset-bottom)); }
+a, button { -webkit-tap-highlight-color: transparent; }
+button, .btn { touch-action: manipulation; }
+
+@media (max-width: 860px) {
+  html { scroll-padding-top: 118px; }
+  .nav { flex-wrap: wrap; row-gap: .5rem; padding-top: calc(.6rem + env(safe-area-inset-top)); }
+  .nav-links {
+    display: flex; order: 3; width: 100%; gap: .45rem;
+    overflow-x: auto; scrollbar-width: none; margin-inline: -1rem; padding: 0 1rem .15rem;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a {
+    white-space: nowrap; font-size: .85rem; padding: .35rem .85rem; border-radius: 999px;
+    background: rgba(255,255,255,.65);
+  }
+  .nav-links a::after { display: none; }
+  .hero h1 { text-shadow: 2px 2px 0 rgba(201,194,236,.7); }
+  .btn { min-height: 48px; }          /* botones cómodos para el dedo */
+  .hero-cta .btn { flex: 1 1 100%; }
+  .galeria-item:nth-child(even) { transform: translateY(16px); }
+  .fondo-ico { opacity: .45; }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Club Mily · Panel",
+  "short_name": "Club Mily",
+  "start_url": "/panel",
+  "scope": "/panel",
+  "display": "standalone",
+  "background_color": "#f4e1f7",
+  "theme_color": "#7a76b0",
+  "icons": [{ "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }]
+}
