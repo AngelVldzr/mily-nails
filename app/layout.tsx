@@ -4,7 +4,12 @@ import "@fontsource-variable/fraunces/full-italic.css";
 import "@fontsource-variable/figtree/index.css";
 import "./globals.css";
 
+const sitio =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000");
+
 export const metadata: Metadata = {
+  metadataBase: new URL(sitio),
   title: "Mily Nail's · Uñas acrílicas, gelish y nail art",
   description:
     "Manicure, uñas acrílicas, gelish y nail art con amor y detalle. Agenda tu cita por WhatsApp y únete al Club Mily para obtener descuentos.",

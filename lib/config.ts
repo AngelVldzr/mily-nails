@@ -36,17 +36,18 @@ export const videosTikTok: string[] = [
   "https://vt.tiktok.com/ZSp2tovb6/",
 ];
 
+// Precios reales "desde" (el detalle completo está en lib/precios.ts → cotizador)
 export const servicios = [
-  { nombre: "Manicure clásico", desc: "Limado, cutícula, hidratación y esmalte tradicional.", desde: 150 },
-  { nombre: "Gelish", desc: "Color que dura de 2 a 3 semanas con brillo intacto.", desde: 250 },
-  { nombre: "Uñas acrílicas", desc: "Largo y forma a tu gusto: almendra, cuadrada, coffin…", desde: 400 },
-  { nombre: "Rubber / Base niveladora", desc: "Fortalece tu uña natural con acabado natural y elegante.", desde: 300 },
-  { nombre: "Nail art", desc: "Francés, líneas, puntos, piedras, efectos y diseños a mano.", desde: 20, unidad: "por uña" },
-  { nombre: "Pedicure", desc: "Exfoliación, cuidado completo y esmalte o gelish.", desde: 250 },
+  { nombre: "Soft Gel", desc: "Extensión ligera y natural en 9 largos, con 2 tonos lisos incluidos.", desde: 280 },
+  { nombre: "Rubber · Manos", desc: "Gel semipermanente con base rubber que fortalece tu uña natural.", desde: 200 },
+  { nombre: "Rubber · Pies", desc: "Gel semipermanente con rubber para unos pies impecables.", desde: 200 },
+  { nombre: "Efectos y nail art", desc: "Espejo, aurora, ojo de gato, francés, 3D, encapsulado y más.", desde: 5, unidad: "por uña" },
+  { nombre: "Cristales", desc: "Desde detalles pequeños hasta uña completa de cristal.", desde: 20, unidad: "por uña" },
+  { nombre: "Retiros y reposiciones", desc: "Retiro de Soft Gel o acrílico y reposición de uñas.", desde: 10, unidad: "por uña" },
 ];
 
 export const trabajos = [
-  { src: "/trabajos/trabajo-1.webp", alt: "Uñas acrílicas cuadradas con diseño rosa, lila y puntos" },
+  { src: "/trabajos/trabajo-1.webp", alt: "Uñas largas cuadradas con diseño rosa, lila y puntos" },
   { src: "/trabajos/trabajo-2.webp", alt: "Uñas almendra nude con detalles en color chocolate" },
   { src: "/trabajos/trabajo-3.webp", alt: "Francés clásico sobre uña natural" },
   { src: "/trabajos/trabajo-4.webp", alt: "Uñas almendra con diseño cromado, piedras y tonos cálidos" },

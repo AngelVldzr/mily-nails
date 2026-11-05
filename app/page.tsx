@@ -39,8 +39,8 @@ export default function Home() {
           <a href="#servicios">Servicios</a>
           <a href="#trabajos">Trabajos</a>
           <a href="#club">Club Mily</a>
-          <a href="#cotiza">Cotiza</a>
           <a href="#ubicacion">Ubicación</a>
+          <a href="#cotiza">Cotiza</a>
         </div>
         <a className="btn btn-primario btn-chico" href="#agenda">Agendar</a>
       </nav>
@@ -62,8 +62,8 @@ export default function Home() {
               <a className="btn btn-secundario" href="#trabajos">Ver trabajos reales</a>
             </div>
             <ul className="hero-chips">
-              <li>💅 Gelish</li>
-              <li>✨ Acrílico</li>
+              <li>💅 Soft Gel</li>
+              <li>✨ Rubber</li>
               <li>🎨 Nail art</li>
               <li>👑 Club de recompensas</li>
             </ul>
@@ -117,12 +117,6 @@ export default function Home() {
           <ClubMily />
         </section>
 
-        {/* ── COTIZA ───────────────────────────── */}
-        <section id="cotiza" className="seccion seccion-angosta" data-scene="3">
-          <Titulo eyebrow="Cotiza">¿Cuánto cuestan mis uñas?</Titulo>
-          <Cotizador />
-        </section>
-
         {/* ── AGENDA ───────────────────────────── */}
         <section id="agenda" className="seccion seccion-angosta" data-scene="4">
           <Titulo eyebrow="Agenda" sub="Llena tus datos y te respondemos por WhatsApp con los horarios disponibles.">
@@ -166,6 +160,13 @@ export default function Home() {
             </div>
           </div>
         </section>
+        {/* ── COTIZA (al final) ────────────────── */}
+        <section id="cotiza" className="seccion" data-scene="3">
+          <Titulo eyebrow="Cotiza" sub="Arma tus uñas paso a paso y conoce el precio al instante. Cuando te guste, mándanosla por WhatsApp.">
+            ¿Cuánto cuestan mis uñas?
+          </Titulo>
+          <Cotizador />
+        </section>
       </main>
 
       <footer className="pie" data-scene="4">
@@ -177,7 +178,9 @@ export default function Home() {
           <a href={redes.tiktok} target="_blank" rel="noopener noreferrer" aria-label="TikTok"><IcoTikTok size={24} /></a>
           <a href={saludoWA} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><IcoWhatsApp size={24} /></a>
         </div>
-        <small>© {new Date().getFullYear()} Mily Nail&apos;s · Todos los derechos reservados</small>
+        <small>
+          © {new Date().getFullYear()} Mily Nail&apos;s · <a href="/privacidad">Aviso de privacidad</a>
+        </small>
       </footer>
 
       <a className="wa-flotante" href={saludoWA} target="_blank" rel="noopener noreferrer" aria-label="Escríbenos por WhatsApp">

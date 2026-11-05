@@ -30,7 +30,7 @@ body {
   background: var(--rosa);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip; /* clip (no hidden) para que "sticky" siga funcionando */
 }
 img { max-width: 100%; display: block; }
 a { color: inherit; }
@@ -358,4 +358,114 @@ button, .btn { touch-action: manipulation; }
   .hero-cta .btn { flex: 1 1 100%; }
   .galeria-item:nth-child(even) { transform: translateY(16px); }
   .fondo-ico { opacity: .45; }
+}
+
+/* ── Aviso de privacidad ───────────────────────── */
+.legal { max-width: 760px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+.legal-volver { display: inline-block; margin-bottom: 1rem; font-weight: 600; color: var(--lila-osc); text-decoration: none; }
+.legal article { padding: clamp(1.3rem, 4vw, 2.4rem); }
+.legal h1 { font-size: clamp(1.8rem, 5vw, 2.4rem); }
+.legal h2 { font-size: 1.2rem; margin: 1.6rem 0 .4rem; }
+.legal p, .legal li { color: var(--texto); }
+.pie small a, .nota a { color: inherit; }
+
+/* ── Cotizador ─────────────────────────────────── */
+.cotizador-app { display: grid; grid-template-columns: 1fr 340px; gap: 1.4rem; align-items: start; }
+.cot-pasos { display: grid; gap: 1.1rem; min-width: 0; }
+.cot-paso { margin: 0; padding: 1.4rem; border: 1px solid rgba(255,255,255,.9); min-width: 0; }
+.cot-paso legend {
+  display: flex; align-items: center; gap: .6rem; padding: 0;
+  font: 800 1.25rem var(--f-titulo), serif; color: var(--lila-osc); float: left; width: 100%; margin-bottom: 1rem;
+}
+.cot-paso legend span {
+  width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; flex: none;
+  background: var(--lila); color: #fff; font: 700 .95rem var(--f-texto), sans-serif;
+}
+.cot-paso legend + * { clear: both; }
+.cot-sub { margin: 0 0 .7rem; font-size: .9rem; color: var(--texto-suave); clear: both; }
+.cot-tecnicas { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; clear: both; }
+.cot-opcion {
+  display: flex; flex-direction: column; gap: .2rem; padding: 1rem; margin: 0; cursor: pointer;
+  border-radius: 16px; border: 2px solid var(--lila-suave); background: #fff; transition: all .2s;
+}
+.cot-opcion input { position: absolute; opacity: 0; pointer-events: none; }
+.cot-opcion strong { font-size: .95rem; line-height: 1.3; color: var(--texto); }
+.cot-opcion small { color: var(--lila); font-weight: 700; }
+.cot-opcion.activa { border-color: var(--lila); background: #f3f0ff; box-shadow: 0 0 0 4px rgba(122,118,176,.15); }
+.cot-opcion:has(input:focus-visible) { outline: 3px solid var(--lila); outline-offset: 2px; }
+.cot-largos { margin-top: 1.1rem; }
+.cot-largo-grid { display: grid; grid-template-columns: repeat(9, 1fr); gap: .4rem; }
+.cot-largo {
+  border: 2px solid var(--lila-suave); background: #fff; border-radius: 12px; padding: .5rem .2rem; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; font-family: var(--f-texto); color: var(--texto); transition: all .2s;
+}
+.cot-largo b { font-size: .95rem; }
+.cot-largo small { font-size: .72rem; color: var(--texto-suave); }
+.cot-largo.activa { background: var(--lila); border-color: var(--lila); color: #fff; }
+.cot-largo.activa small { color: #f0edff; }
+.cot-fila {
+  display: flex; align-items: center; justify-content: space-between; gap: .8rem;
+  padding: .65rem .8rem; border-radius: 14px; background: #fff; border: 1px solid var(--rosa-2); transition: all .2s;
+}
+.cot-fila > div:first-child { display: flex; flex-direction: column; min-width: 0; }
+.cot-fila strong { font-weight: 600; font-size: .95rem; }
+.cot-fila small { font-size: .8rem; color: var(--texto-suave); }
+.cot-fila.con-valor { border-color: var(--lila); background: #f6f3ff; }
+.cot-check { margin-top: .9rem; }
+.cot-lista { display: grid; grid-template-columns: 1fr 1fr; gap: .55rem; clear: both; }
+.cot-tabs { display: flex; gap: .4rem; margin-bottom: .9rem; overflow-x: auto; scrollbar-width: none; }
+.cot-tabs button {
+  flex: none; border: 0; border-radius: 999px; padding: .5rem 1rem; cursor: pointer;
+  font: 600 .9rem var(--f-texto), sans-serif; background: var(--rosa); color: var(--lila-osc);
+  display: flex; align-items: center; gap: .4rem;
+}
+.cot-tabs button.activa { background: var(--lila-osc); color: #fff; }
+.cot-badge { background: var(--mantequilla); color: #6b520c; border-radius: 999px; min-width: 20px; height: 20px; padding: 0 6px; display: grid; place-items: center; font-size: .75rem; }
+.contador { display: flex; align-items: center; gap: .15rem; flex: none; }
+.contador button {
+  width: 36px; height: 36px; border-radius: 50%; border: 0; cursor: pointer; font-size: 1.2rem; line-height: 1;
+  background: var(--rosa); color: var(--lila-osc); transition: background .2s;
+}
+.contador button:last-child { background: var(--lila); color: #fff; }
+.contador button:disabled { opacity: .35; cursor: default; }
+.contador output { min-width: 26px; text-align: center; font-weight: 700; }
+.cot-resumen { position: sticky; top: 90px; padding: 1.5rem; text-align: center; border: 2px solid var(--lila-suave); }
+.cot-resumen-titulo { margin: 0; font: 800 1.2rem var(--f-titulo), serif; color: var(--lila-osc); }
+.cot-total { margin: .3rem 0 .8rem; font: 900 2.8rem var(--f-titulo), serif; color: var(--lila); line-height: 1; }
+.cot-total small { font: 600 .9rem var(--f-texto), sans-serif; color: var(--texto-suave); }
+.cot-vacio { color: var(--texto-suave); }
+.cot-desglose {
+  list-style: none; padding: .8rem 0 0; margin: 0 0 1rem; text-align: left; font-size: .88rem;
+  border-top: 1px dashed var(--lila-suave); max-height: 230px; overflow-y: auto;
+}
+.cot-desglose li { display: flex; justify-content: space-between; gap: .6rem; padding: .25rem 0; }
+.cot-desglose b { color: var(--lila-osc); white-space: nowrap; }
+.btn.deshabilitado { opacity: .45; pointer-events: none; }
+.cot-resumen .btn-link { margin-top: .3rem; }
+
+@media (max-width: 980px) {
+  .cotizador-app { grid-template-columns: 1fr; }
+  .cot-resumen { position: sticky; top: auto; bottom: calc(.6rem + env(safe-area-inset-bottom)); z-index: 5; box-shadow: 0 -6px 30px -10px rgba(79,74,134,.35); }
+  .cot-desglose { max-height: 110px; }
+}
+@media (max-width: 640px) {
+  .cot-tecnicas { grid-template-columns: 1fr; }
+  .cot-largo-grid { grid-template-columns: repeat(5, 1fr); }
+  .cot-lista { grid-template-columns: 1fr; }
+  .cot-paso { padding: 1.1rem; }
+  .cot-resumen { padding: 1rem; }
+  .cot-total { font-size: 2.2rem; margin-bottom: .5rem; }
+}
+
+.cot-conceptos { display: none; }
+@media (max-width: 980px) {
+  /* En celular el resumen es una barra compacta pegada abajo */
+  .cot-resumen { display: flex; align-items: center; gap: .8rem; text-align: left; padding: .75rem .9rem; border-radius: 20px; background: rgba(255,255,255,.97); }
+  .cot-resumen-cabeza { flex: 1; min-width: 0; }
+  .cot-resumen-titulo { font: 600 .78rem var(--f-texto), sans-serif; color: var(--texto-suave); }
+  .cot-total { font-size: 1.9rem; margin: 0; }
+  .cot-conceptos { display: block; margin: 0; font-size: .75rem; color: var(--texto-suave); }
+  .cot-desglose, .cot-vacio, .cot-resumen .nota, .cot-resumen .btn-link { display: none; }
+  .cot-resumen .btn-wa { width: auto; flex: none; padding-inline: 1.1rem; }
+  body:has(.cot-resumen) .wa-flotante { bottom: calc(6.4rem + env(safe-area-inset-bottom)); }
 }

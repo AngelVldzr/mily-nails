@@ -1,7 +1,7 @@
 import { redes, videosTikTok } from "@/lib/config";
 import { IcoTikTok } from "./Icons";
 
-const extraerId = (url: string) => url.match(/(?:video|\/v)\/(\d{8,})/)?.[1] ?? null;
+const extraerId = (url: string) => url.match(/(?:video|\/v)\/(\d{8,25})/)?.[1] ?? null;
 
 /**
  * Convierte un link de TikTok (corto o completo) en el ID del video.
@@ -9,7 +9,18 @@ const extraerId = (url: string) => url.match(/(?:video|\/v)\/(\d{8,})/)?.[1] ?? 
  * redirección; si falla se intenta con el oEmbed oficial de TikTok.
  * El resultado se guarda en caché 1 día (ISR) para no consultar en cada visita.
  */
+const HOSTS_PERMITIDOS = ["tiktok.com", "www.tiktok.com", "vt.tiktok.com", "vm.tiktok.com", "m.tiktok.com"];
+const esTikTok = (url: string) => {
+  try {
+    const u = new URL(url);
+    return u.protocol === "https:" && HOSTS_PERMITIDOS.includes(u.hostname);
+  } catch {
+    return false;
+  }
+};
+
 async function resolverId(url: string): Promise<string | null> {
+  if (!esTikTok(url)) return null; // solo consultamos links reales de TikTok
   const directo = extraerId(url);
   if (directo) return directo;
 
@@ -17,7 +28,7 @@ async function resolverId(url: string): Promise<string | null> {
   try {
     const r = await fetch(url, { redirect: "manual", headers: ua, next: { revalidate: 86400 } });
     const destino = r.headers.get("location") ?? "";
-    const id = extraerId(destino);
+    const id = esTikTok(destino) ? extraerId(destino) : null;
     if (id) return id;
   } catch {}
   try {
@@ -27,7 +38,8 @@ async function resolverId(url: string): Promise<string | null> {
     });
     if (r.ok) {
       const d = await r.json();
-      return d.embed_product_id ?? extraerId(d.html ?? "") ?? null;
+      const id = String(d.embed_product_id ?? "");
+      return /^\d{8,25}$/.test(id) ? id : null; // solo números: nada raro entra al iframe
     }
   } catch {}
   return null;
@@ -51,6 +63,8 @@ export default async function TikTokVideos() {
               src={`https://www.tiktok.com/player/v1/${id}?music_info=0&description=0&rel=0`}
               title={`Video de TikTok de Mily Nail's ${i + 1}`}
               allow="encrypted-media; fullscreen; picture-in-picture"
+              sandbox="allow-scripts allow-same-origin allow-popups allow-presentation"
+              referrerPolicy="strict-origin-when-cross-origin"
               loading="lazy"
             />
           </div>

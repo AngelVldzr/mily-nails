@@ -70,8 +70,11 @@ export default function Panel() {
   async function entrar(e: React.FormEvent) {
     e.preventDefault();
     const r = await fetch("/api/admin/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password: pass }) });
-    if (r.ok) { setPass(""); buscar(""); }
-    else setAviso({ tipo: "error", txt: "Contraseña incorrecta" });
+    if (r.ok) { setPass(""); setAviso(null); buscar(""); }
+    else {
+      const d = await r.json().catch(() => ({}));
+      setAviso({ tipo: "error", txt: d.error || "No se pudo entrar" });
+    }
   }
 
   async function salir() {
@@ -129,7 +132,7 @@ export default function Panel() {
         <form className="tarjeta" onSubmit={entrar}>
           <h1>Panel de Mily</h1>
           <p>Ingresa la contraseña para administrar el Club Mily.</p>
-          <input type="password" value={pass} onChange={(e) => setPass(e.target.value)} placeholder="Contraseña" autoFocus />
+          <input type="password" autoComplete="current-password" maxLength={200} value={pass} onChange={(e) => setPass(e.target.value)} placeholder="Contraseña" autoFocus />
           <button className="btn btn-primario">Entrar</button>
           {aviso?.tipo === "error" && <p className="msg msg-error">{aviso.txt}</p>}
         </form>
@@ -160,14 +163,15 @@ export default function Panel() {
       <form className="tarjeta panel-nueva" onSubmit={crear}>
         <h2>Registrar clienta nueva</h2>
         <div className="fila-input">
-          <input placeholder="Nombre" value={nueva.nombre} onChange={(e) => setNueva({ ...nueva, nombre: e.target.value })} required />
-          <input placeholder="WhatsApp (10 dígitos)" inputMode="numeric" value={nueva.telefono} onChange={(e) => setNueva({ ...nueva, telefono: e.target.value })} required />
+          <input placeholder="Nombre" maxLength={60} value={nueva.nombre} onChange={(e) => setNueva({ ...nueva, nombre: e.target.value })} required />
+          <input placeholder="WhatsApp (10 dígitos)" inputMode="numeric" maxLength={16} value={nueva.telefono} onChange={(e) => setNueva({ ...nueva, telefono: e.target.value })} required />
           <button className="btn btn-primario">Agregar</button>
         </div>
         <label className="check">
           <input type="checkbox" checked={sellarHoy} onChange={(e) => setSellarHoy(e.target.checked)} />
           Darle también su primer sello (visita de hoy)
         </label>
+        <p className="nota">Antes de registrarla, pregúntale si está de acuerdo en guardar su nombre y WhatsApp para el Club Mily.</p>
       </form>
 
       <form className="panel-buscar" onSubmit={(e) => { e.preventDefault(); buscar(); }}>

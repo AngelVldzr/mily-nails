@@ -15,11 +15,12 @@ Hecho con **Next.js 15** + **Supabase** (base de datos gratuita), listo para **V
 | Servicios | Tarjetas con precio "desde" (edítalas en `lib/config.ts`) |
 | Trabajos reales | Galería con visor ampliado + videos de TikTok |
 | Club Mily | Escalera de 10 visitas y consulta de sellos por número de WhatsApp |
-| Cotiza | Espacio reservado para la calculadora (`components/Cotizador.tsx`) |
+| Cotiza | Calculadora de precios real; la clienta envía su cotización por WhatsApp (precios en `lib/precios.ts`) |
 | Agenda | Formulario que abre WhatsApp con el mensaje listo |
 | Ubicación | Mapa de Google + horario |
 | Pie | Facebook, Instagram, TikTok y WhatsApp |
 | `/panel` | Panel privado para que Mily registre clientas y visitas |
+| `/privacidad` | Aviso de privacidad (plantilla, revisar antes de publicar) |
 
 El fondo cambia de "escena" (esmaltes, uñas, gemas, coronas, flores) según la sección visible.
 
@@ -66,7 +67,9 @@ git push -u origin main
 ### 4. Desplegar en Vercel
 1. En <https://vercel.com> → **Add New → Project** → importa el repo `mily-nails`.
 2. En **Environment Variables** agrega: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`,
-   `ADMIN_PASSWORD`, `ADMIN_SECRET`.
+   `ADMIN_PASSWORD` (mínimo 10 caracteres) y `ADMIN_SECRET` (mínimo 32 caracteres, genéralo con
+   `node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"`).
+   Si faltan o son muy cortas, el panel no abre (a propósito).
 3. **Deploy**. Cada `git push` vuelve a publicar automáticamente.
 
 ---
@@ -78,6 +81,11 @@ Todo está en **`lib/config.ts`**:
 - `negocio.mapsEmbed` → en Google Maps: **Compartir → Insertar un mapa → copiar** y pega solo el valor de `src="..."`
 - `videosTikTok` → pega los links de tus videos (`https://www.tiktok.com/@mily_nails50/video/123…`)
 - `servicios` y `trabajos` (fotos en `public/trabajos/`)
+
+Los precios del cotizador están en **`lib/precios.ts`**.
+
+## 🔒 Seguridad
+Lee **`SEGURIDAD.md`** para ver qué protecciones tiene el sitio y la lista de mantenimiento.
 
 ## 🔐 Uso del panel
 Entra a `tu-sitio.vercel.app/panel` con `ADMIN_PASSWORD`.

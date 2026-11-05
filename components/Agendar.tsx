@@ -7,7 +7,7 @@ import { IcoWhatsApp } from "./Icons";
 
 export default function Agendar() {
   const [nombre, setNombre] = useState("");
-  const [servicio, setServicio] = useState(servicios[1].nombre);
+  const [servicio, setServicio] = useState(servicios[0].nombre);
   const [fecha, setFecha] = useState("");
   const [turno, setTurno] = useState("Mañana");
   const [nota, setNota] = useState("");
@@ -32,7 +32,7 @@ export default function Agendar() {
     <form className="agenda tarjeta" onSubmit={enviar}>
       <div className="campo">
         <label htmlFor="ag-nombre">Tu nombre</label>
-        <input id="ag-nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Ej. Fernanda" required />
+        <input id="ag-nombre" maxLength={60} value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Ej. Fernanda" required />
       </div>
       <div className="campo">
         <label htmlFor="ag-servicio">Servicio</label>
@@ -58,7 +58,7 @@ export default function Agendar() {
       </div>
       <div className="campo">
         <label htmlFor="ag-nota">¿Alguna idea o diseño? (opcional)</label>
-        <textarea id="ag-nota" rows={3} value={nota} onChange={(e) => setNota(e.target.value)} placeholder="Largo, forma, colores… también puedes mandar foto por WhatsApp" />
+        <textarea id="ag-nota" rows={3} maxLength={300} value={nota} onChange={(e) => setNota(e.target.value)} placeholder="Largo, forma, colores… también puedes mandar foto por WhatsApp" />
       </div>
       <button className="btn btn-wa">
         <IcoWhatsApp /> Pedir disponibilidad por WhatsApp

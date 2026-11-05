@@ -7,7 +7,6 @@ type Resultado =
   | { encontrada: false }
   | {
       encontrada: true;
-      nombre: string;
       visitas: number;
       enCiclo: number;
       ciclosCompletos: number;
@@ -73,12 +72,15 @@ export default function ClubMily() {
         <div className="club-reglas">
           <h3>¿Cómo funciona?</h3>
           <ul>
-            <li>Te registramos con tu número de WhatsApp en tu primera cita.</li>
+            <li>Te registramos con tu número de WhatsApp en tu primera cita (con tu permiso).</li>
             <li>Cada visita suma un sello automáticamente.</li>
             <li>El descuento se aplica <b>en</b> la visita 3, 5, 7 y 10.</li>
             <li>Al llegar a la visita 10 tu tarjeta vuelve a empezar 💜</li>
           </ul>
-          <p className="nota">Descuento aplicable a un servicio por visita. No acumulable con otras promociones.</p>
+          <p className="nota">
+            Descuento aplicable a un servicio por visita. No acumulable con otras promociones.{" "}
+            Consulta nuestro <a href="/privacidad">aviso de privacidad</a>.
+          </p>
         </div>
 
         <form className="club-consulta tarjeta" onSubmit={consultar}>
@@ -88,6 +90,7 @@ export default function ClubMily() {
             <input
               id="tel"
               inputMode="numeric"
+              maxLength={16}
               autoComplete="tel"
               placeholder="744 123 4567"
               value={tel}
@@ -109,7 +112,7 @@ export default function ClubMily() {
 
           {res && res.encontrada && (
             <div className="msg msg-ok">
-              <p className="saludo">¡Hola, {res.nombre}! 💅</p>
+              <p className="saludo">¡Encontramos tu tarjeta! 💅</p>
               <p>
                 Llevas <b>{res.enCiclo}</b> de {CICLO} visitas en tu tarjeta
                 {res.ciclosCompletos > 0 && <> · ya completaste {res.ciclosCompletos} {res.ciclosCompletos === 1 ? "tarjeta" : "tarjetas"} 👑</>}.
