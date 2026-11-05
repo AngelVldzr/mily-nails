@@ -299,3 +299,6 @@ html { overflow-x: clip; }
   .tiktok-grid > * { scroll-snap-align: center; }
   .seccion { padding-block: 3.5rem; }
 }
+
+.horario-disp { margin: 0; color: var(--texto-suave); }
+.horario-disp b { color: var(--lila-osc); font-size: 1.05rem; }

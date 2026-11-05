@@ -21,6 +21,8 @@ function Titulo({ eyebrow, children, sub }: { eyebrow: string; children: React.R
   );
 }
 
+export const revalidate = 86400; // vuelve a generar la página 1 vez al día (videos de TikTok)
+
 export default function Home() {
   return (
     <>
@@ -149,15 +151,14 @@ export default function Home() {
             </div>
             <div className="info tarjeta">
               <h3><IcoReloj /> Horario</h3>
-              <ul className="horario">
-                {negocio.horario.map((h) => (
-                  <li key={h.dias}><span>{h.dias}</span><b>{h.horas}</b></li>
-                ))}
-              </ul>
+              <p className="horario-disp"><b>{negocio.horario}</b><br />{negocio.horarioNota}</p>
+              <a className="btn btn-wa" href={saludoWA} target="_blank" rel="noopener noreferrer">
+                <IcoWhatsApp /> Consultar disponibilidad
+              </a>
               {negocio.direccion && (
                 <p className="direccion"><IcoPin /> {negocio.direccion}</p>
               )}
-              <a className="btn btn-secundario" href={negocio.mapsLink} target="_blank" rel="noopener noreferrer">
+              <a className="btn btn-secundario" href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(negocio.direccion)}`} target="_blank" rel="noopener noreferrer">
                 Cómo llegar
               </a>
             </div>

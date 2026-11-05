@@ -8,16 +8,16 @@ export const negocio = {
   // WhatsApp en formato internacional SIN "+" ni espacios (México: 52 + 10 dígitos)
   whatsapp: "527441584351",
   whatsappVisible: "+52 744 158 4351",
-  horario: [
-    { dias: "Lunes a Viernes", horas: "10:00 – 19:00" },
-    { dias: "Sábado", horas: "10:00 – 16:00" },
-    { dias: "Domingo", horas: "Cerrado" },
-  ],
-  // Texto de la dirección (opcional). Déjalo vacío si no quieres mostrarla.
-  direccion: "",
+  // Las citas se dan según disponibilidad (se confirma por WhatsApp)
+  horario: "Citas según disponibilidad",
+  horarioNota: "Escríbenos por WhatsApp y te compartimos los espacios libres de la semana.",
+  direccion: "Condominio Venus 60, Granjas del Marqués, 39890 Acapulco de Juárez, Gro.",
   mapsLink: "https://maps.app.goo.gl/mCnMTn22KEdRpwht7?g_st=iw",
-  // Pega aquí el "src" del iframe de Google Maps → Compartir → Insertar un mapa
-  mapsEmbed: "",
+  // Mapa incrustado (no requiere API key)
+  mapsEmbed:
+    "https://www.google.com/maps?q=" +
+    encodeURIComponent("Condominio Venus 60, Granjas del Marqués, 39890 Acapulco de Juárez, Gro.") +
+    "&z=17&output=embed",
 };
 
 export const redes = {
@@ -27,9 +27,14 @@ export const redes = {
   tiktokUsuario: "mily_nails50",
 };
 
-// Videos de TikTok a mostrar: pega el link completo de cada video
-// ej. "https://www.tiktok.com/@mily_nails50/video/7412345678901234567"
-export const videosTikTok: string[] = [];
+// Videos de TikTok a mostrar. Acepta links cortos (vt.tiktok.com/...) o completos
+// (https://www.tiktok.com/@mily_nails50/video/7412345678901234567).
+// Los links cortos se convierten solos en el servidor al publicar en Vercel.
+export const videosTikTok: string[] = [
+  "https://vt.tiktok.com/ZSp2njVGv/",
+  "https://vt.tiktok.com/ZSp2nJdpR/",
+  "https://vt.tiktok.com/ZSp2tovb6/",
+];
 
 export const servicios = [
   { nombre: "Manicure clásico", desc: "Limado, cutícula, hidratación y esmalte tradicional.", desde: 150 },
